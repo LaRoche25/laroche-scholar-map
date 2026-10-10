@@ -76,13 +76,40 @@ L.tileLayer(
 
 // Initial scholar counts.
 // We will connect your Google Sheet next.
-const scholars = [
-  { state: "Pennsylvania", count: 5, lat: 41.2033, lng: -77.1945 },
-  { state: "New Jersey", count: 1, lat: 40.0583, lng: -74.4057 },
-  { state: "Georgia", count: 2, lat: 32.1656, lng: -82.9001 },
-  { state: "Alabama", count: 1, lat: 32.3182, lng: -86.9023 },
-  { state: "Oklahoma", count: 1, lat: 35.4676, lng: -97.5164 }
-];
+const scholars = [];
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSzOoNsMoaq0j5osFJ_glq9UP9SXNmM6WxBRxGY4ehdyVWPOriFwuGt6WVwPjBtFiAKeUoYcpNhiVA/pub?gid=0&single=true&output=csv";
+
+async function loadScholars() {
+  try {
+    const response = await fetch(sheetURL);
+    if (!response.ok) throw new Error("Unable to load Google Sheet");
+
+    const csv = await response.text();
+    const rows = csv.trim().split(/\r?\n/).slice(1);
+
+    const data = rows.map(row => {
+      const [state, count, lat, lng] = row.split(",");
+
+      return {
+        state: state?.trim(),
+        count: Number(count),
+        lat: Number(lat),
+        lng: Number(lng)
+      };
+    }).filter(item =>
+      item.state &&
+      item.count > 0 &&
+      Number.isFinite(item.lat) &&
+      Number.isFinite(item.lng)
+    );
+
+    displayScholars(data);
+  } catch (error) {
+    console.error(error);
+    document.getElementById("summary").textContent =
+      "Scholar information is temporarily unavailable.";
+  }
+}
 
 function displayScholars(data) {
   let total = 0;
@@ -125,7 +152,7 @@ function displayScholars(data) {
     states + ' states and growing!';
 }
 
-displayScholars(scholars);
+loadScholars();
 </script>
 </body>
 </html>
