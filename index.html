@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaRoche Foundation | Scholar Impact Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #19365c;
+  }
+  .wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 16px;
+    text-align: center;
+  }
+  h2 { margin: 12px 0 6px; }
+  .subtitle { color: #555; margin-bottom: 16px; }
+  #map {
+    height: 550px;
+    width: 100%;
+    border-radius: 12px;
+    z-index: 1;
+  }
+  .count-marker {
+    background: #ed4c9b;
+    color: white;
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #0004;
+  }
+  .summary {
+    margin-top: 14px;
+    font-weight: bold;
+    font-size: 17px;
+  }
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <h2>Our Growing Reach</h2>
+  <p class="subtitle">LaRoche Scholars Across America</p>
+  <div id="map"></div>
+  <p class="summary" id="summary">Loading scholar locations...</p>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('map', {
+  scrollWheelZoom: false
+}).setView([38.5, -96], 4);
+
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }
+).addTo(map);
+
+// Initial scholar counts.
+// We will connect your Google Sheet next.
+const scholars = [
+  { state: "Pennsylvania", count: 5, lat: 41.2033, lng: -77.1945 },
+  { state: "New Jersey", count: 1, lat: 40.0583, lng: -74.4057 },
+  { state: "Georgia", count: 2, lat: 32.1656, lng: -82.9001 },
+  { state: "Alabama", count: 1, lat: 32.3182, lng: -86.9023 },
+  { state: "Oklahoma", count: 1, lat: 35.4676, lng: -97.5164 }
+];
+
+function displayScholars(data) {
+  let total = 0;
+  let states = 0;
+  const bounds = [];
+
+  data.forEach(item => {
+    if (!item.count || item.count <= 0) return;
+
+    total += item.count;
+    states++;
+
+    const icon = L.divIcon({
+      className: '',
+      html: '<div class="count-marker">' + item.count + '</div>',
+      iconSize: [44, 44],
+      iconAnchor: [22, 22]
+    });
+
+    L.marker([item.lat, item.lng], { icon })
+      .addTo(map)
+      .bindPopup(
+        '<strong>' + item.state + '</strong><br>' +
+        item.count + ' LaRoche Scholar' +
+        (item.count === 1 ? '' : 's')
+      );
+
+    bounds.push([item.lat, item.lng]);
+  });
+
+  if (bounds.length) {
+    map.fitBounds(bounds, {
+      padding: [55, 55],
+      maxZoom: 5
+    });
+  }
+
+  document.getElementById('summary').textContent =
+    total + ' LaRoche Scholars across ' +
+    states + ' states and growing!';
+}
+
+displayScholars(scholars);
+</script>
+</body>
+</html>
