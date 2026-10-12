@@ -44,6 +44,8 @@
     font-weight: bold;
     box-shadow: 0 2px 8px #0004;
   }
+  .map-note { font-size: 13px; color: #555; margin: 10px 0 0; }
+  .college-pin { background: #c79523; border: 2px solid white; color: #fff; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 21px; box-shadow: 0 2px 7px #0005; }
   .summary {
     margin-top: 14px;
     font-weight: bold;
@@ -55,8 +57,9 @@
 <body>
 <div class="wrapper">
   <h2>Our Growing Reach</h2>
-  <p class="subtitle">LaRoche Scholars Across America</p>
+  <p class="subtitle">LaRoche Scholars & College Access Hubs Across America</p>
   <div id="map"></div>
+  <p class="map-note">Select a gold cap to identify a college. Use the layers control to show or hide College Access Hubs.</p>
   <p class="summary" id="summary">Loading scholar locations...</p>
 </div>
 
@@ -73,6 +76,26 @@ L.tileLayer(
     maxZoom: 18
   }
 ).addTo(map);
+
+// College Access Hubs are independent of the live scholar-count feed.
+const collegeData = [{"name":"Saint Joseph’s University","city":"Philadelphia","state":"Pennsylvania","lat":39.9954,"lng":-75.2388,"hbcu":"No","website":"https://www.sju.edu"},{"name":"Norfolk State University","city":"Norfolk","state":"Virginia","lat":36.8489,"lng":-76.2637,"hbcu":"Yes","website":"https://www.nsu.edu"},{"name":"Temple University","city":"Philadelphia","state":"Pennsylvania","lat":39.9812,"lng":-75.1553,"hbcu":"No","website":"https://www.temple.edu"},{"name":"Villanova University","city":"Villanova","state":"Pennsylvania","lat":40.0346,"lng":-75.3376,"hbcu":"No","website":"https://www.villanova.edu"},{"name":"Embry-Riddle Aeronautical University","city":"Daytona Beach","state":"Florida","lat":29.1875,"lng":-81.0485,"hbcu":"No","website":"https://erau.edu"},{"name":"Drexel University","city":"Philadelphia","state":"Pennsylvania","lat":39.9566,"lng":-75.1899,"hbcu":"No","website":"https://drexel.edu"},{"name":"Yale University","city":"New Haven","state":"Connecticut","lat":41.3163,"lng":-72.9223,"hbcu":"No","website":"https://www.yale.edu"},{"name":"The College of New Jersey","city":"Ewing","state":"New Jersey","lat":40.2688,"lng":-74.7784,"hbcu":"No","website":"https://tcnj.edu"},{"name":"Pennsylvania State University","city":"University Park","state":"Pennsylvania","lat":40.7982,"lng":-77.8599,"hbcu":"No","website":"https://www.psu.edu"},{"name":"West Chester University","city":"West Chester","state":"Pennsylvania","lat":39.9522,"lng":-75.6001,"hbcu":"No","website":"https://www.wcupa.edu"},{"name":"University of Pittsburgh","city":"Pittsburgh","state":"Pennsylvania","lat":40.4444,"lng":-79.9608,"hbcu":"No","website":"https://www.pitt.edu"},{"name":"Cheyney University","city":"Cheyney","state":"Pennsylvania","lat":39.9332,"lng":-75.5307,"hbcu":"Yes","website":"https://cheyney.edu"},{"name":"Widener University","city":"Chester","state":"Pennsylvania","lat":39.8618,"lng":-75.3554,"hbcu":"No","website":"https://www.widener.edu"},{"name":"Harvard University","city":"Cambridge","state":"Massachusetts","lat":42.377,"lng":-71.1167,"hbcu":"No","website":"https://www.harvard.edu"},{"name":"Purdue University","city":"West Lafayette","state":"Indiana","lat":40.4237,"lng":-86.9212,"hbcu":"No","website":"https://www.purdue.edu"},{"name":"Morgan State University","city":"Baltimore","state":"Maryland","lat":39.3442,"lng":-76.5844,"hbcu":"Yes","website":"https://www.morgan.edu"},{"name":"Howard University","city":"Washington","state":"District of Columbia","lat":38.9227,"lng":-77.0194,"hbcu":"Yes","website":"https://howard.edu"},{"name":"Emory University","city":"Atlanta","state":"Georgia","lat":33.7925,"lng":-84.323,"hbcu":"No","website":"https://www.emory.edu"},{"name":"Savannah State University","city":"Savannah","state":"Georgia","lat":32.0246,"lng":-81.0583,"hbcu":"Yes","website":"https://www.savannahstate.edu"},{"name":"Princeton University","city":"Princeton","state":"New Jersey","lat":40.3431,"lng":-74.6551,"hbcu":"No","website":"https://www.princeton.edu"},{"name":"Delaware Valley University","city":"Doylestown","state":"Pennsylvania","lat":40.2971,"lng":-75.1585,"hbcu":"No","website":"https://www.delval.edu"},{"name":"Delaware State University","city":"Dover","state":"Delaware","lat":39.1873,"lng":-75.5419,"hbcu":"Yes","website":"https://www.desu.edu"},{"name":"Boston College","city":"Chestnut Hill","state":"Massachusetts","lat":42.3355,"lng":-71.1685,"hbcu":"No","website":"https://www.bc.edu"},{"name":"Duke University","city":"Durham","state":"North Carolina","lat":36.0014,"lng":-78.9382,"hbcu":"No","website":"https://duke.edu"},{"name":"Rutgers University","city":"New Brunswick","state":"New Jersey","lat":40.5008,"lng":-74.4474,"hbcu":"No","website":"https://www.rutgers.edu"},{"name":"Baylor University","city":"Waco","state":"Texas","lat":31.5488,"lng":-97.1131,"hbcu":"No","website":"https://www.baylor.edu"},{"name":"Fisk University","city":"Nashville","state":"Tennessee","lat":36.1679,"lng":-86.803,"hbcu":"Yes","website":"https://www.fisk.edu"},{"name":"Indiana University of Pennsylvania","city":"Indiana","state":"Pennsylvania","lat":40.6157,"lng":-79.16,"hbcu":"No","website":"https://www.iup.edu"},{"name":"University of Hartford","city":"West Hartford","state":"Connecticut","lat":41.8003,"lng":-72.7141,"hbcu":"No","website":"https://www.hartford.edu"},{"name":"Arcadia University","city":"Glenside","state":"Pennsylvania","lat":40.0926,"lng":-75.1656,"hbcu":"No","website":"https://www.arcadia.edu"},{"name":"Lincoln University","city":"Lincoln University","state":"Pennsylvania","lat":39.8085,"lng":-75.9273,"hbcu":"Yes","website":"https://www.lincoln.edu"},{"name":"Georgetown University","city":"Washington","state":"District of Columbia","lat":38.9076,"lng":-77.0723,"hbcu":"No","website":"https://www.georgetown.edu"},{"name":"University of Delaware","city":"Newark","state":"Delaware","lat":39.6837,"lng":-75.7497,"hbcu":"No","website":"https://www.udel.edu"},{"name":"La Roche University","city":"Pittsburgh","state":"Pennsylvania","lat":40.569,"lng":-80.013,"hbcu":"No","website":"https://www.laroche.edu"},{"name":"Oregon State University","city":"Corvallis","state":"Oregon","lat":44.5638,"lng":-123.2794,"hbcu":"No","website":"https://oregonstate.edu"},{"name":"Tuskegee University","city":"Tuskegee","state":"Alabama","lat":32.4302,"lng":-85.7077,"hbcu":"Yes","website":"https://www.tuskegee.edu"},{"name":"Stockton University","city":"Galloway","state":"New Jersey","lat":39.4928,"lng":-74.5317,"hbcu":"No","website":"https://stockton.edu"},{"name":"Stillman College","city":"Tuscaloosa","state":"Alabama","lat":33.1999,"lng":-87.5855,"hbcu":"Yes","website":"https://stillman.edu"},{"name":"Thomas Jefferson University","city":"Philadelphia","state":"Pennsylvania","lat":39.9494,"lng":-75.1578,"hbcu":"No","website":"https://www.jefferson.edu"}];
+const collegeLayer = L.layerGroup();
+const collegeIcon = L.divIcon({className: '', html: '<div class="college-pin" aria-label="College">🎓</div>', iconSize:[34,34], iconAnchor:[17,17], popupAnchor:[0,-17]});
+function escapeText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+collegeData.forEach(c => {
+  if (!Number.isFinite(c.lat) || !Number.isFinite(c.lng)) return;
+  const website = /^https:\/\/[a-z0-9.-]+\//i.test(c.website + '/') ?
+    '<a href="' + escapeText(c.website) + '" target="_blank" rel="noopener noreferrer">College website</a>' : '';
+  L.marker([c.lat,c.lng], {icon: collegeIcon})
+    .bindPopup('<strong>' + escapeText(c.name) + '</strong><br>' +
+      escapeText(c.city) + ', ' + escapeText(c.state) + '<br>' +
+      (c.hbcu === 'Yes' ? 'HBCU<br>' : '') + website)
+    .addTo(collegeLayer);
+});
+collegeLayer.addTo(map);
+L.control.layers(null, {'🎓 College Access Hubs': collegeLayer}, {collapsed:false, position:'topright'}).addTo(map);
 
 // Initial scholar counts.
 // We will connect your Google Sheet next.
