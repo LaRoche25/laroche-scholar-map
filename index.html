@@ -180,6 +180,23 @@ function displayScholars(data) {
 }
 
 loadScholars();
+ 
+map.on('click', function(e) {
+  map.eachLayer(function(layer) {
+    if (layer instanceof L.Marker) {
+      const point = map.latLngToContainerPoint(layer.getLatLng());
+      const clicked = map.latLngToContainerPoint(e.latlng);
+      const distance = point.distanceTo(clicked);
+
+      if (distance < 25) {
+        map.setView(layer.getLatLng(), Math.max(map.getZoom(), 9), {
+          animate: true
+        });
+      }
+    }
+  });
+});
+
 </script>
 </body>
 </html>
